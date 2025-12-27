@@ -97,7 +97,7 @@ Shizuku 是一个让普通应用使用系统 API 的工具，本应用依赖它�
 
 ### 2. 安装 AutoGLM For Android
 
-1. 从 [Releases](https://github.com/your-repo/releases) 下载最新 APK
+1. 从 [Releases](https://github.com/Luokavin/AutoGLM-For-Android/releases) 下载最新 APK
 2. 安装 APK 并打开应用
 3. 授予 Shizuku 权限（点击"请求权限"按钮）
 4. 授予悬浮窗权限（点击"授予权限"按钮）
