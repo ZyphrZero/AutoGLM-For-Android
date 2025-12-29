@@ -72,6 +72,7 @@ AutoGLM For Android 是基于 [Open-AutoGLM](https://github.com/zai-org/Open-Aut
 - ✅ **任务模板**：保存常用任务，一键执行
 - ✅ **自定义 Prompt**：支持自定义系统提示词
 - ✅ **快捷磁贴**：通知栏快捷磁贴，快速打开悬浮窗
+- ✅ **日志导出**：支持导出调试日志，自动脱敏敏感信息
 
 ## 📱 系统要求
 
@@ -231,6 +232,7 @@ app/src/main/java/com/kevinluo/autoglm/
 │   ├── PhoneAgent.kt       # 手机 Agent 主类
 │   └── AgentContext.kt     # 对话上下文管理
 ├── app/                    # 应用基础模块
+│   ├── AppInfo.kt          # 应用信息数据类
 │   ├── AppResolver.kt      # 应用名称解析
 │   └── AutoGLMApplication.kt
 ├── config/                 # 配置模块
@@ -240,9 +242,14 @@ app/src/main/java/com/kevinluo/autoglm/
 │   └── DeviceExecutor.kt   # 设备命令执行
 ├── history/                # 历史记录模块
 │   ├── HistoryManager.kt   # 历史管理
-│   └── HistoryActivity.kt  # 历史界面
+│   ├── HistoryActivity.kt  # 历史界面
+│   ├── HistoryDetailActivity.kt  # 历史详情界面
+│   ├── HistoryDetailAdapter.kt   # 历史详情适配器
+│   ├── HistoryModels.kt    # 历史数据模型
+│   └── ScreenshotAnnotator.kt    # 截图标注工具
 ├── input/                  # 输入模块
 │   ├── TextInputManager.kt # 文本输入管理
+│   ├── KeyboardHelper.kt   # 键盘辅助工具
 │   └── AutoGLMKeyboardService.kt  # 内置键盘
 ├── model/                  # 模型通信模块
 │   └── ModelClient.kt      # API 客户端
@@ -253,10 +260,14 @@ app/src/main/java/com/kevinluo/autoglm/
 │   └── SettingsActivity.kt # 设置界面
 ├── ui/                     # UI 模块
 │   ├── FloatingWindowService.kt  # 悬浮窗服务
+│   ├── FloatingWindowTileService.kt  # 快捷磁贴服务
+│   ├── FloatingWindowToggleActivity.kt  # 悬浮窗切换
 │   └── MainViewModel.kt    # 主界面 ViewModel
 ├── util/                   # 工具模块
 │   ├── CoordinateConverter.kt    # 坐标转换
+│   ├── ErrorHandler.kt     # 错误处理
 │   ├── HumanizedSwipeGenerator.kt # 人性化滑动
+│   ├── LogFileManager.kt   # 日志文件管理与导出
 │   └── Logger.kt           # 日志工具
 ├── ComponentManager.kt     # 组件管理器
 ├── MainActivity.kt         # 主界面
@@ -311,39 +322,6 @@ app/src/main/java/com/kevinluo/autoglm/
 ```bash
 ./gradlew installDebug
 ```
-
-### 添加新功能
-
-**添加新的动作类型**：
-
-1. 在 `AgentAction.kt` 添加新的动作类：
-```kotlin
-data class NewAction(val param: String) : AgentAction() {
-    override fun formatForDisplay(): String = "新动作: $param"
-}
-```
-
-2. 在 `ActionParser.kt` 添加解析逻辑：
-```kotlin
-"NewAction" -> parseNewAction(response)
-```
-
-3. 在 `ActionHandler.kt` 添加执行逻辑：
-```kotlin
-is AgentAction.NewAction -> executeNewAction(action)
-```
-
-**添加新的设置项**：
-
-1. 在 `SettingsManager.kt` 添加键和方法：
-```kotlin
-private const val KEY_NEW_SETTING = "new_setting"
-
-fun getNewSetting(): String = prefs.getString(KEY_NEW_SETTING, "") ?: ""
-fun saveNewSetting(value: String) = prefs.edit().putString(KEY_NEW_SETTING, value).apply()
-```
-
-2. 在设置界面添加对应 UI
 
 ## 🔧 常见问题
 

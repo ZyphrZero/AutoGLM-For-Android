@@ -74,6 +74,7 @@ AutoGLM For Android is a native Android application developed based on the [Open
 - ✅ **Task Templates**: Save frequently used tasks, one-click execution
 - ✅ **Custom Prompts**: Support custom system prompts
 - ✅ **Quick Tile**: Notification bar quick tile, fast access to floating window
+- ✅ **Log Export**: Export debug logs with automatic sensitive data sanitization
 
 ## 📱 Requirements
 
@@ -233,6 +234,7 @@ app/src/main/java/com/kevinluo/autoglm/
 │   ├── PhoneAgent.kt       # Phone Agent main class
 │   └── AgentContext.kt     # Conversation context management
 ├── app/                    # App base module
+│   ├── AppInfo.kt          # App info data class
 │   ├── AppResolver.kt      # App name resolver
 │   └── AutoGLMApplication.kt
 ├── config/                 # Configuration module
@@ -242,9 +244,14 @@ app/src/main/java/com/kevinluo/autoglm/
 │   └── DeviceExecutor.kt   # Device command executor
 ├── history/                # History module
 │   ├── HistoryManager.kt   # History manager
-│   └── HistoryActivity.kt  # History UI
+│   ├── HistoryActivity.kt  # History UI
+│   ├── HistoryDetailActivity.kt  # History detail UI
+│   ├── HistoryDetailAdapter.kt   # History detail adapter
+│   ├── HistoryModels.kt    # History data models
+│   └── ScreenshotAnnotator.kt    # Screenshot annotator
 ├── input/                  # Input module
 │   ├── TextInputManager.kt # Text input manager
+│   ├── KeyboardHelper.kt   # Keyboard helper utility
 │   └── AutoGLMKeyboardService.kt  # Built-in keyboard
 ├── model/                  # Model communication module
 │   └── ModelClient.kt      # API client
@@ -255,10 +262,14 @@ app/src/main/java/com/kevinluo/autoglm/
 │   └── SettingsActivity.kt # Settings UI
 ├── ui/                     # UI module
 │   ├── FloatingWindowService.kt  # Floating window service
+│   ├── FloatingWindowTileService.kt  # Quick tile service
+│   ├── FloatingWindowToggleActivity.kt  # Floating window toggle
 │   └── MainViewModel.kt    # Main screen ViewModel
 ├── util/                   # Utility module
 │   ├── CoordinateConverter.kt    # Coordinate converter
+│   ├── ErrorHandler.kt     # Error handler
 │   ├── HumanizedSwipeGenerator.kt # Humanized swipe generator
+│   ├── LogFileManager.kt   # Log file manager & export
 │   └── Logger.kt           # Logger utility
 ├── ComponentManager.kt     # Component manager
 ├── MainActivity.kt         # Main activity
@@ -313,39 +324,6 @@ app/src/main/java/com/kevinluo/autoglm/
 ```bash
 ./gradlew installDebug
 ```
-
-### Adding New Features
-
-**Add New Action Type**:
-
-1. Add new action class in `AgentAction.kt`:
-```kotlin
-data class NewAction(val param: String) : AgentAction() {
-    override fun formatForDisplay(): String = "New Action: $param"
-}
-```
-
-2. Add parsing logic in `ActionParser.kt`:
-```kotlin
-"NewAction" -> parseNewAction(response)
-```
-
-3. Add execution logic in `ActionHandler.kt`:
-```kotlin
-is AgentAction.NewAction -> executeNewAction(action)
-```
-
-**Add New Setting**:
-
-1. Add key and methods in `SettingsManager.kt`:
-```kotlin
-private const val KEY_NEW_SETTING = "new_setting"
-
-fun getNewSetting(): String = prefs.getString(KEY_NEW_SETTING, "") ?: ""
-fun saveNewSetting(value: String) = prefs.edit().putString(KEY_NEW_SETTING, value).apply()
-```
-
-2. Add corresponding UI in settings screen
 
 ## 🔧 FAQ
 
